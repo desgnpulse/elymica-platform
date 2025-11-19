@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --sand: #f4ede4;
+  --terracotta: #d2967b;
+  --olive: #a5a58d;
+  --sage: #6b705c;
+  --night: #2f2d2a;
+  --gold: #c2a878;
+  --surface: #fffdf8;
+  --font-body-fallback: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-heading-fallback: "Playfair Display", Georgia, serif;
+}
+
+@theme inline {
+  --color-background: var(--sand);
+  --color-foreground: var(--night);
+  --color-terracotta: var(--terracotta);
+  --color-olive: var(--olive);
+  --color-sage: var(--sage);
+  --color-gold: var(--gold);
+  --color-surface: var(--surface);
+  --font-sans: var(--font-body, var(--font-body-fallback));
+  --font-heading: var(--font-heading, var(--font-heading-fallback));
+}
+
+body {
+  background: var(--sand);
+  color: var(--night);
+  font-family: var(--font-body, var(--font-body-fallback));
+}
