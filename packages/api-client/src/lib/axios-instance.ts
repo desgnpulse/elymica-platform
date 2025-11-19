@@ -57,7 +57,7 @@ export function createApiClient(config: ApiClientConfig): AxiosInstance {
   client.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
-      const originalRequest = error.config;
+      const originalRequest = error.config as typeof error.config & { _retry?: boolean };
 
       // Handle 401 Unauthorized
       if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
