@@ -1,0 +1,15 @@
+{
+  // Cloudflare Workers configuration for OpenNext
+  // See: https://opennext.js.org/cloudflare/get-started
+  "name": "elymica-student-portal",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2024-12-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "NEXT_RUNTIME": "nodejs"
+  }
+}
