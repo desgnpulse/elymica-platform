@@ -1,0 +1,17 @@
+# Exclude cache and build artifacts that exceed Cloudflare Pages 25MB limit
+.next/cache
+.next/trace
+
+# Exclude development files
+node_modules
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Exclude IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
