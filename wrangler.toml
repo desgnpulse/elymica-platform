@@ -1,0 +1,11 @@
+name = "elymica-student-portal"
+compatibility_date = "2024-01-01"
+
+# Cloudflare Pages configuration
+pages_build_output_dir = "apps/student-portal/.next"
+
+[env.production]
+name = "elymica-student-portal"
+
+[env.preview]
+name = "elymica-student-portal-preview"
