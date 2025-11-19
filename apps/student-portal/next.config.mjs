@@ -1,6 +1,4 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
+const nextConfig = {
   transpilePackages: ['@elymica/ui', '@elymica/tokens', '@elymica/api-client', '@elymica/hooks'],
 
   // Cloudflare compatibility
@@ -14,9 +12,9 @@ const nextConfig: NextConfig = {
 
   // Performance optimizations
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn'],
-    } : false,
+    removeConsole: process.env.NODE_ENV === 'production'
+      ? { exclude: ['error', 'warn'] }
+      : false,
   },
 
   experimental: {

@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && rm -rf .next/cache",
-    "build:cloudflare": "npx @cloudflare/next-on-pages",
-    "preview": "npx wrangler pages dev .vercel/output/static",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare build && wrangler dev",
     "start": "next start",
     "lint": "eslint"
   },
@@ -16,22 +16,22 @@
     "@elymica/tokens": "workspace:^",
     "@elymica/ui": "workspace:^",
     "@tanstack/react-query": "^5.90.10",
-    "next": "15.1.6",
+    "next": "14.2.12",
     "next-auth": "^4.24.13",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.13.16",
+    "@opennextjs/cloudflare": "^1.13.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "eslint": "^9",
-    "eslint-config-next": "16.0.3",
+    "eslint-config-next": "14.2.12",
+    "wrangler": "^4.49.0",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "vercel": "47.0.4"
+    "typescript": "^5"
   }
 }
