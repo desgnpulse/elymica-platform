@@ -10,6 +10,23 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "NEXT_RUNTIME": "nodejs"
+    "NEXT_RUNTIME": "nodejs",
+    "NEXTAUTH_URL": "https://elymica-student-portal.ancient-base-07f2.workers.dev",
+    "NEXT_PUBLIC_API_BASE_URL": "https://api.elymica.com",
+    "AUTH_SERVICE_BASE_URL": "https://auth.elymica.com"
+  },
+  "env": {
+    "production": {
+      "name": "elymica-student-portal",
+      "vars": {
+        "NEXTAUTH_URL": "https://student.elymica.com"
+      }
+    },
+    "staging": {
+      "name": "elymica-student-portal-staging",
+      "vars": {
+        "NEXTAUTH_URL": "https://elymica-student-portal-staging.workers.dev"
+      }
+    }
   }
 }
