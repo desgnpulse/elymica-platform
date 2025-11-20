@@ -61,6 +61,7 @@ export type RefreshTokenRequest = z.infer<typeof RefreshTokenRequestSchema>;
 export const RefreshTokenResponseSchema = z.object({
   success: z.boolean(),
   access_token: z.string(),
+  refresh_token: z.string(),  // New refresh token (rotation)
   token_type: z.literal('Bearer'),
   expires_in: z.string(),
 });

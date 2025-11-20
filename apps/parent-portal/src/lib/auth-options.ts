@@ -103,6 +103,7 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           accessToken: refreshed.access_token,
+          refreshToken: refreshed.refresh_token,  // Store new refresh token (rotation)
           expiresAt: newExpiry,
           error: undefined,
         };
