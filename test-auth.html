@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elymica Auth Testing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #F4EDE4 0%, #E8DFD6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #2F2D2A;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: #6B705C;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #2F2D2A;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E8DFD6;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #6B705C;
+            box-shadow: 0 0 0 3px rgba(107, 112, 92, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 24px;
+            background: #6B705C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #5A5E4D;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 112, 92, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #A5A58D;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            word-break: break-all;
+            display: none;
+        }
+
+        .response.show {
+            display: block;
+        }
+
+        .response.success {
+            background: #D4EDDA;
+            border: 2px solid #C3E6CB;
+            color: #155724;
+        }
+
+        .response.error {
+            background: #F8D7DA;
+            border: 2px solid #F5C6CB;
+            color: #721C24;
+        }
+
+        .response h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .response pre {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .token-display {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 6px;
+            font-size: 11px;
+            word-break: break-all;
+        }
+
+        .token-display strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #2F2D2A;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .header h1 {
+            color: #2F2D2A;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #6B705C;
+            font-size: 16px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status-badge.online {
+            background: #D4EDDA;
+            color: #155724;
+        }
+
+        .status-badge.offline {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-box {
+            background: #FFF3CD;
+            border: 2px solid #FFE69C;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔐 Elymica Auth Testing</h1>
+            <p class="subtitle">Test user registration and login for Sprint 4</p>
+            <div style="margin-top: 15px;">
+                <span id="authStatus">Checking service status...</span>
+            </div>
+        </div>
+
+        <!-- Registration Card -->
+        <div class="card">
+            <h2>📝 Register New User</h2>
+            <p>Create a new user account to test authentication</p>
+
+            <div class="info-box">
+                <strong>Default Tenant ID:</strong>
+                00000000-0000-0000-0000-000000000001
+            </div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" placeholder="user@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="Min 8 characters" required minlength="8">
+                </div>
+
+                <div class="form-group">
+                    <label for="regRole">Role</label>
+                    <select id="regRole" required>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="parent">Parent</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="registerBtn">
+                    Create Account
+                </button>
+            </form>
+
+            <div id="registerResponse" class="response"></div>
+        </div>
+
+        <!-- Login Card -->
+        <div class="card">
+            <h2>🔑 Login</h2>
+            <p>Sign in with your credentials</p>
+
+            <div class="info-box">
+                <strong>Quick Test:</strong>
+                Use the email and password from the user you just registered
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="user@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" id="loginBtn">
+                    Sign In
+                </button>
+            </form>
+
+            <div id="loginResponse" class="response"></div>
+        </div>
+    </div>
+
+    <script>
+        const TENANT_ID = '00000000-0000-0000-0000-000000000001';
+        const AUTH_API_URL = 'https://api.elymica.com';
+
+        // Check auth service health on page load
+        async function checkAuthStatus() {
+            const statusEl = document.getElementById('authStatus');
+            try {
+                const response = await fetch(`${AUTH_API_URL}/health`);
+                const data = await response.json();
+                if (data.status === 'healthy') {
+                    statusEl.innerHTML = `Auth Service <span class="status-badge online">● Online</span>`;
+                } else {
+                    statusEl.innerHTML = `Auth Service <span class="status-badge offline">● Offline</span>`;
+                }
+            } catch (error) {
+                statusEl.innerHTML = `Auth Service <span class="status-badge offline">● Error</span>`;
+            }
+        }
+
+        // Registration Form Handler
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById('registerBtn');
+            const responseDiv = document.getElementById('registerResponse');
+
+            // Get form values
+            const email = document.getElementById('regEmail').value;
+            const name = document.getElementById('regName').value;
+            const password = document.getElementById('regPassword').value;
+            const role = document.getElementById('regRole').value;
+
+            // Disable button and show loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>Creating account...';
+            responseDiv.className = 'response';
+            responseDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${AUTH_API_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tenant_id: TENANT_ID,
+                        email,
+                        name,
+                        password,
+                        role
+                    })
+                });
+
+                const data = await response.json();
+
+                // Show response
+                responseDiv.className = `response ${data.success ? 'success' : 'error'} show`;
+
+                if (data.success) {
+                    responseDiv.innerHTML = `
+                        <h3>✅ Registration Successful!</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p style="margin-top: 15px;">
+                            <strong>Next Step:</strong> Use the login form to sign in with:<br>
+                            Email: <code>${email}</code><br>
+                            Password: <code>${password}</code>
+                        </p>
+                    `;
+
+                    // Auto-fill login form
+                    document.getElementById('loginEmail').value = email;
+                    document.getElementById('loginPassword').value = password;
+
+                    // Reset registration form
+                    document.getElementById('registerForm').reset();
+                } else {
+                    responseDiv.innerHTML = `
+                        <h3>❌ Registration Failed</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+
+            } catch (error) {
+                responseDiv.className = 'response error show';
+                responseDiv.innerHTML = `
+                    <h3>❌ Network Error</h3>
+                    <pre>${error.message}</pre>
+                    <p style="margin-top: 10px;">Make sure the auth service is running at ${AUTH_API_URL}</p>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Create Account';
+            }
+        });
+
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById('loginBtn');
+            const responseDiv = document.getElementById('loginResponse');
+
+            // Get form values
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Disable button and show loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>Signing in...';
+            responseDiv.className = 'response';
+            responseDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${AUTH_API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tenant_id: TENANT_ID,
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+
+                // Show response
+                responseDiv.className = `response ${data.success ? 'success' : 'error'} show`;
+
+                if (data.success) {
+                    responseDiv.innerHTML = `
+                        <h3>🎉 Login Successful!</h3>
+                        <pre>${JSON.stringify(data.user, null, 2)}</pre>
+
+                        <div class="token-display">
+                            <strong>Access Token (15 min expiry):</strong>
+                            ${data.access_token.substring(0, 50)}...
+                        </div>
+
+                        <div class="token-display">
+                            <strong>Refresh Token (7 day expiry):</strong>
+                            ${data.refresh_token.substring(0, 50)}...
+                        </div>
+
+                        <p style="margin-top: 15px; color: #155724;">
+                            ✅ Tokens stored in browser memory<br>
+                            ✅ Session active for 15 minutes<br>
+                            ✅ Auto-refresh enabled
+                        </p>
+                    `;
+
+                    // Store tokens in window for testing
+                    window.accessToken = data.access_token;
+                    window.refreshToken = data.refresh_token;
+                    window.currentUser = data.user;
+
+                    console.log('✅ Login successful!');
+                    console.log('Access Token:', data.access_token);
+                    console.log('Refresh Token:', data.refresh_token);
+                    console.log('User:', data.user);
+                } else {
+                    responseDiv.innerHTML = `
+                        <h3>❌ Login Failed</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p style="margin-top: 10px;">
+                            ${data.error === 'Invalid credentials'
+                                ? 'Please check your email and password.'
+                                : 'Please try again or register a new account.'}
+                        </p>
+                    `;
+                }
+
+            } catch (error) {
+                responseDiv.className = 'response error show';
+                responseDiv.innerHTML = `
+                    <h3>❌ Network Error</h3>
+                    <pre>${error.message}</pre>
+                    <p style="margin-top: 10px;">Make sure the auth service is running at ${AUTH_API_URL}</p>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Sign In';
+            }
+        });
+
+        // Check status on page load
+        checkAuthStatus();
+
+        // Helpful console message
+        console.log('%c🔐 Elymica Auth Testing Console', 'font-size: 20px; font-weight: bold; color: #6B705C;');
+        console.log('%cAfter successful login, tokens will be available as:', 'font-size: 12px; color: #666;');
+        console.log('  - window.accessToken');
+        console.log('  - window.refreshToken');
+        console.log('  - window.currentUser');
+    </script>
+</body>
+</html>

@@ -9,11 +9,10 @@ import { z } from 'zod';
 export const UserSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
-  first_name: z.string(),
-  last_name: z.string(),
-  role: z.enum(['student', 'teacher', 'parent', 'admin']),
-  tenant_id: z.string().uuid(),
-  tenant_subdomain: z.string(),
+  name: z.string(),
+  role: z.enum(['student', 'teacher', 'parent', 'admin', 'super_admin']),
+  tenant_id: z.string().uuid().optional(),
+  tenant_subdomain: z.string().optional(),
   status: z.enum(['active', 'inactive', 'suspended']).optional(),
   created_at: z.string().datetime().optional(),
 });

@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: response.user.id,
             email: response.user.email,
-            name: `${response.user.first_name} ${response.user.last_name}`.trim(),
+            name: response.user.name,
             role: response.user.role,
             accessToken: response.access_token,
             refreshToken: response.refresh_token,
