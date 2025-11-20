@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/login-form';
 
@@ -16,7 +17,15 @@ export default function LoginPage() {
           <h1 className="mt-2 font-heading text-4xl text-night">Empower every class session</h1>
         </div>
         <div className="w-full max-w-xl">
-          <LoginForm />
+          <Suspense
+            fallback={
+              <div className="rounded-2xl border border-sage/20 bg-white/70 p-8 text-center text-olive">
+                Preparing secure sign-in…
+              </div>
+            }
+          >
+            <LoginForm />
+          </Suspense>
           <p className="mt-6 text-center text-sm text-olive">
             Need access?{' '}
             <Link href="mailto:support@elymica.com" className="font-medium text-sage underline-offset-4 hover:underline">

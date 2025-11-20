@@ -1,0 +1,50 @@
+{
+  // Cloudflare Workers configuration for OpenNext
+  // See: https://opennext.js.org/cloudflare/get-started
+  "name": "elymica-teacher-portal",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2024-12-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "routes": [
+    {
+      "pattern": "teacher.elymica.com",
+      "custom_domain": true
+    }
+  ],
+  "vars": {
+    "NEXT_RUNTIME": "nodejs",
+    "NEXTAUTH_URL": "https://teacher.elymica.com",
+    "NEXT_PUBLIC_API_BASE_URL": "https://api.elymica.com",
+    "AUTH_SERVICE_BASE_URL": "https://auth.elymica.com"
+  },
+  "env": {
+    "production": {
+      "name": "elymica-teacher-portal",
+      "routes": [
+        {
+          "pattern": "teacher.elymica.com",
+          "custom_domain": true
+        }
+      ],
+      "vars": {
+        "NEXTAUTH_URL": "https://teacher.elymica.com"
+      }
+    },
+    "staging": {
+      "name": "elymica-teacher-portal-staging",
+      "routes": [
+        {
+          "pattern": "teacher-staging.elymica.com",
+          "custom_domain": true
+        }
+      ],
+      "vars": {
+        "NEXTAUTH_URL": "https://teacher-staging.elymica.com"
+      }
+    }
+  }
+}

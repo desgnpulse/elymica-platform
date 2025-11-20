@@ -60,12 +60,12 @@ export function ParentDashboardContent({
     isSuccess: messageSent,
     reset: resetMessageStatus,
   } = useSendMessage(notificationService);
+  const activeChildId = selectedChildId ?? children[0]?.id ?? null;
+
   const { data: teacherRecipientsData, isLoading: recipientsLoading } = useTeacherRecipients(
     notificationService,
     activeChildId ? { student_id: activeChildId } : undefined
   );
-
-  const activeChildId = selectedChildId ?? children[0]?.id ?? null;
   const { data: assignmentsData, isLoading: assignmentsLoading } = useAssignments(
     assignmentService,
     activeChildId
