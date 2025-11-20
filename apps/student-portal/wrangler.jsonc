@@ -9,23 +9,41 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "routes": [
+    {
+      "pattern": "student.elymica.com",
+      "custom_domain": true
+    }
+  ],
   "vars": {
     "NEXT_RUNTIME": "nodejs",
-    "NEXTAUTH_URL": "https://elymica-student-portal.ancient-base-07f2.workers.dev",
+    "NEXTAUTH_URL": "https://student.elymica.com",
     "NEXT_PUBLIC_API_BASE_URL": "https://api.elymica.com",
     "AUTH_SERVICE_BASE_URL": "https://auth.elymica.com"
   },
   "env": {
     "production": {
       "name": "elymica-student-portal",
+      "routes": [
+        {
+          "pattern": "student.elymica.com",
+          "custom_domain": true
+        }
+      ],
       "vars": {
         "NEXTAUTH_URL": "https://student.elymica.com"
       }
     },
     "staging": {
       "name": "elymica-student-portal-staging",
+      "routes": [
+        {
+          "pattern": "student-staging.elymica.com",
+          "custom_domain": true
+        }
+      ],
       "vars": {
-        "NEXTAUTH_URL": "https://elymica-student-portal-staging.workers.dev"
+        "NEXTAUTH_URL": "https://student-staging.elymica.com"
       }
     }
   }
